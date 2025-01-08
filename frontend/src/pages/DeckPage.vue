@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<h1>deck</h1>
-		<p>content here</p>
+		<i><li><router-link to="/">home</router-link></li></i>
+		<p>deck...</p>
 	</div>
 </template>
 

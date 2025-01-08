@@ -1,16 +1,14 @@
 <template>
-  <HomePage/>
+	<h2>flashcards</h2>
+	<div>
+		<router-view></router-view>
+	</div>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue'
-
-export default {
-  name: 'App',
-  components: {
-    HomePage
-  }
-}
+	export default {
+		name: 'App',
+	}
 </script>
 
 <style>
