@@ -8,9 +8,14 @@
 			</div>
 
 			<li>
-				<router-link :to="`/deck/${this.selected.id}`">
-					view {{this.selected.name}}'s cards
-				</router-link>
+				<div v-if="selected.id != -1">
+					<router-link :to="`/deck/${this.selected.id}`">
+						view {{this.selected.name}}'s cards
+					</router-link>
+				</div>
+				<div v-else>
+					Select a deck
+				</div>
 			</li>
 
 			<div v-if="error">
