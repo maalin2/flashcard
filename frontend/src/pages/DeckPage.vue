@@ -13,9 +13,10 @@
 		<ul>
 			<div v-for="card in cards" :key="card.id">
 				<li>
-					<p><i>{{card.question}}</i>
-					<br>
-					<b>{{card.answer}}</b>
+					<p>
+						<i>{{card.question}}</i>
+						<br>
+						<b>{{card.answer}}</b>
 					</p>
 				</li>
 
