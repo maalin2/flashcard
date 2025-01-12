@@ -19,9 +19,15 @@
 						<b>{{card.answer}}</b>
 					</p>
 				</li>
-
 			</div>
 		</ul>
+
+		<div>
+			make a new card?
+			<input v-model="card_question" placeholder="question">
+			<input v-model="card_answer" placeholder="answer">
+			<button @click="new_card(card_question, card_answer)">create</button>
+		</div>
 
 	</div>
 </template>
@@ -35,15 +41,17 @@
 				cards: [],
 				loading: true,
 				error: false,
+				card_question: '',
+				card_answer: '',
 			}
 		},
 
 		created() {
-			this.fetchDecks();
+			this.fetchCards();
 		},
 		
 		methods: {
-			async fetchDecks() {
+			async fetchCards() {
 				try {
 					const url = `http://127.0.0.1:5000/deck/${this.$route.params.id}/cards`
 					const response = await axios.get(url)
@@ -55,6 +63,20 @@
 					this.loading = false;
 				}
 			},
+
+			async new_card(card_question, card_answer){
+				try {
+					const url = `http://127.0.0.1:5000/deck/${this.$route.params.id}/card`
+					await axios.post(url, {
+						question: card_question,
+						answer: card_answer
+					})
+				} catch (e) {
+					this.error = true
+				} finally {
+					this.fetchCards()
+				}
+			}
 		}, 
 		
 
