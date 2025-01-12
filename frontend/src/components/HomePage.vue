@@ -7,7 +7,11 @@
 				</p>
 			</div>
 
-			<li><router-link to="/deck">view {{this.selected}}'s cards</router-link></li>
+			<li>
+				<router-link :to="`/deck/${this.selected.id}`">
+					view {{this.selected.name}}'s cards
+				</router-link>
+			</li>
 
 			<div v-if="error">
 				error!
@@ -15,10 +19,10 @@
 
 
 			<div>
-				you are viewing {{selected}}
+				you are viewing {{selected.name}}
 				<select v-model="selected">
 					<option disabled value="">please select a deck</option>
-					<option v-for="deck in this.decks" :key="deck.id">
+					<option v-for="deck in this.decks" :key="deck.id" :value="deck">
 						{{deck.name}}
 					</option>
 				</select>
@@ -41,7 +45,10 @@
 			return {
 				error: false,
 				decks: [],
-				selected: 'no deck',
+				selected: {
+					id: -1,
+					name: 'no deck'
+				},
 				new_deck_name: '',
 				complete: false
 
@@ -72,7 +79,7 @@
 				} finally {
 					this.complete = true
 					this.get_decks()
-					setTimeout(() => {this.complete = false}, 10000);
+					setTimeout(() => {this.complete = false; this.new_deck_name = ''}, 3000);
 				}
 				
 			}
@@ -82,6 +89,6 @@
 			this.get_decks()
 
 		},
-		name: 'HomePage',
+		name: 'HomePage'
 	}
 </script>

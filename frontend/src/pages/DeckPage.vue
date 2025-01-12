@@ -1,19 +1,27 @@
 <template>
 	<div>
 		<i><li><router-link to="/">home</router-link></li></i>
-		<p>list of decks</p>
+		<p>list of cards</p>
 		
 		<div v-if="loading">loading</div>
 		<div v-if="error" class="error">error viewing decks</div>
 
-		<ul v-if="decks.length">
-			<li v-for="deck in decks" :key="deck.id">
-				<router-link :to="'/deck' + deck.id">{{deck.name}}</router-link>
+		<div v-if="cards.length === 0">
+			no cards. maybe make a new card?
+		</div>
 
-			</li>
+		<ul>
+			<div v-for="card in cards" :key="card.id">
+				<li>
+					<p><i>{{card.question}}</i>
+					<br>
+					<b>{{card.answer}}</b>
+					</p>
+				</li>
+
+			</div>
 		</ul>
 
-		<div v-else>no decks</div>
 	</div>
 </template>
 
@@ -23,7 +31,7 @@
 	export default {
 		data() {
 			return {
-				decks: [],
+				cards: [],
 				loading: true,
 				error: false,
 			}
@@ -36,14 +44,15 @@
 		methods: {
 			async fetchDecks() {
 				try {
-					const response = await axios.get('http://127.0.0.1:5000/decks');
-					this.decks = response.data.decks;
+					const url = `http://127.0.0.1:5000/deck/${this.$route.params.id}/cards`
+					const response = await axios.get(url)
+					this.cards = response.data.cards
+					console.log(this.cards)
 				} catch (e) {
 					this.error = true;
 				} finally {
 					this.loading = false;
 				}
-				
 			},
 		}, 
 		

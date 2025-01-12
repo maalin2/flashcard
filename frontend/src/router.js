@@ -5,7 +5,7 @@ import DeckPage from './pages/DeckPage.vue'
 
 const routes = [
 	{ path: '/', component: HomePage },
-	{ path: '/deck', component: DeckPage },
+	{ path: '/deck/:id', component: DeckPage, props: true },
 ];
 
 
