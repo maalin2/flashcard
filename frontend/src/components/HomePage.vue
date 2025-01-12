@@ -7,7 +7,7 @@
 				</p>
 			</div>
 
-			<li><router-link to="/deck">deck</router-link></li>
+			<li><router-link to="/deck">view {{this.selected}}'s cards</router-link></li>
 
 			<div v-if="error">
 				error!
