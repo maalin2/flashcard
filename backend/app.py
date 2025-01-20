@@ -45,6 +45,17 @@ def create_deck():
     else:
         return jsonify({'error': 'deck name required!'}), 400
 
+
+@app.route('/deck/<int:deck_id>/card', methods=['DELETE'])
+def delete_deck(deck_id):
+    deck = Deck.query.get_or_404(deck_id)
+    if deck:
+        db.session.delete(deck)
+        db.commit()
+        return jsonify({'message': f'deck with id {deck_id} deleted'}), 200
+    else:
+        return jsonify({'error': 'deck not found'}), 404
+
 @app.route('/deck/<int:deck_id>/card', methods=['POST'])
 def create_card(deck_id):
     deck = Deck.query.get_or_404(deck_id)
