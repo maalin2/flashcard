@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from gpt import prompt_gemini
 
 app = Flask(__name__)
 CORS(app)
@@ -86,6 +87,15 @@ def delete_card(deck_id, card_id):
 def get_decks():
     decks = Deck.query.all()
     return jsonify({'decks': [{'id': deck.id, 'name': deck.name} for deck in decks]})
+
+@app.route('/gpt', methods=['GET'])
+def gpt():
+    question = request.json.get('question')
+    resp = request.json.get('resp')
+    e_resp = request.json.get('e_resp')
+
+    t = prompt_gemini(question, resp, resp)
+    return jsonify({'resonse': t}), 200
 
 @app.route('/deck/<int:deck_id>/cards', methods=['GET'])
 def get_cards(deck_id):
