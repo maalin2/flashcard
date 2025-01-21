@@ -10,8 +10,16 @@ model = gemini.GenerativeModel('gemini-1.5-flash')
 def prompt_gemini(question, resp, e_resp):
     prompt = f'''
         <SYSTEM_PROMPT>
-        you are a subject matter expert and a tutor. you will receive a question, answer, and expected answer.
-        the expected answer is incorrect and i want you to provide an indepth response to the user is incorrect, and the correct solution. provide some intuition and reasoning depending on the complexity of the problem. be concise, around 200 words. format in html inside a div block but don't add markdown escape ticks.
+        you are a subject matter expert and a tutor. inside the DATA tag you will receive in order the question, my response, and the expected response
+        the expected answer is incorrect and i want you to provide me an answer as to why I am incorrect, and intuiton and methods that will allow me to arrive at the answer. be concise, around 200 words. please do not format; write raw text with no markdown, html, or tex. 
+
+        depending on the level of the detail the question is looking for, accept mostly correct answers or answers without nuance.
+
+        do not comment on the nature of the response or expected response. only comment based on subject matter; take the question, answer and expected answer at face value
+
+        if answers are symantically correct, they are correct; provide no feedback.
+
+        below are some examples you can model your answer after.
         </SYSTEM_PROMPT>
         <EXAMPLES>
         Example:
@@ -31,10 +39,11 @@ def prompt_gemini(question, resp, e_resp):
         now to get x we have multiplication. what do we do to reverse multiplication? division:
         x = 4/5
         </EXAMPLES>
-
-        The question is {question}
-        The response is {resp}
-        The correct answer is {e_resp}
+        <DATA>
+            {question}
+            {resp}
+            {e_resp}
+        </DATA>
     '''
 
     response = model.generate_content(prompt)

@@ -88,14 +88,14 @@ def get_decks():
     decks = Deck.query.all()
     return jsonify({'decks': [{'id': deck.id, 'name': deck.name} for deck in decks]})
 
-@app.route('/gpt', methods=['GET'])
+@app.route('/gpt', methods=['POST'])
 def gpt():
     question = request.json.get('question')
     resp = request.json.get('resp')
     e_resp = request.json.get('e_resp')
 
     t = prompt_gemini(question, resp, resp)
-    return jsonify({'resonse': t}), 200
+    return jsonify({'response': t}), 200
 
 @app.route('/deck/<int:deck_id>/cards', methods=['GET'])
 def get_cards(deck_id):

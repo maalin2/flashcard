@@ -52,6 +52,17 @@
 		methods: {
 			async handle_answer(user_answer) {
 				console.log(`${user_answer}\n${this.cards[this.random_id].answer}`)
+				if (user_answer !== this.cards[this.random_id].answer) {
+					const url = `${this.base_url}/gpt`	
+					const json = {
+						question: this.cards[this.random_id].question,
+						resp: user_answer,
+						e_resp: this.cards[this.random_id].answer
+					}
+
+					const response = await axios.post(url, json)
+					console.log(response.data.response)
+				}
 			},
 
 			async fetchCards() {
