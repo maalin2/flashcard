@@ -70,6 +70,18 @@ def create_card(deck_id):
     else:
         return jsonify({'error': 'question and answer required'}), 400
 
+@app.route('/deck/<int:deck_id>/card/<int:card_id>', methods=['DELETE'])
+def delete_card(deck_id, card_id):
+    deck = Deck.query.get_or_404(deck_id)
+    card = Card.query.filter_by(id=card_id, deck_id = deck_id).first()
+    if not card:
+        return jsonify({'error': 'card not found'}), 404
+
+    db.session.delete(card)
+    db.session.commit()
+
+    return jsonify({'message': f'card with id {card_id} deleted from deck {deck_id}'}), 200
+
 @app.route('/decks', methods=['GET'])
 def get_decks():
     decks = Deck.query.all()
