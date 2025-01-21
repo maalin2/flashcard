@@ -12,8 +12,11 @@
 		</div>
 
 		<ul>
-			<div v-if="random_id">
+			<div v-if="random_id != null">
 				<i>{{this.cards[this.random_id].question}}</i>
+				<br>
+				<input v-model="user_answer">
+				<button @click="handle_answer(user_answer)">submit</button>
 			</div>
 			<br>
 			<div>
@@ -47,6 +50,10 @@
 		},
 		
 		methods: {
+			async handle_answer(user_answer) {
+				console.log(`${user_answer}\n${this.cards[this.random_id].answer}`)
+			},
+
 			async fetchCards() {
 				try {
 					const url = `${this.base_url}/deck/${this.id}/cards`
@@ -62,8 +69,11 @@
 
 			get_random_card_id() {
 				const N = this.cards.length
-				const id =  Math.floor(Math.random() * N)
-				this.random_id = id
+				const id =  Math.floor(Math.random() * N) 
+				console.log(id, this.cards[this.random_id])
+				this.random_id =  id
+
+				this.user_answer = ''
 			},
 		}, 
 		
