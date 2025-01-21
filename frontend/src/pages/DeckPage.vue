@@ -1,6 +1,13 @@
 <template>
 	<div>
 		<i><li><router-link to="/">home</router-link></li></i>
+
+		<div>
+			<button @click="del_deck()">
+				delete deck
+			</button>
+		</div>
+		
 		<p>list of cards</p>
 		
 		<div v-if="loading">loading</div>
@@ -43,6 +50,8 @@
 				error: false,
 				card_question: '',
 				card_answer: '',
+				id: this.$route.params.id,
+				base_url: 'http://127.0.0.1:5000'
 			}
 		},
 
@@ -51,9 +60,23 @@
 		},
 		
 		methods: {
+			async del_deck(){
+				const url = `${this.base_url}/deck/${this.id}`
+				console.log(url)
+				axios.delete(url)
+					.then(() => {
+						this.$router.replace({
+							path: '/',
+							query: {deck_deleted: true}
+						})
+					}).catch((e) => {
+						console.error('failed to delete deck', e)
+					}
+				)
+			}, 
 			async fetchCards() {
 				try {
-					const url = `http://127.0.0.1:5000/deck/${this.$route.params.id}/cards`
+					const url = `${this.base_url}/deck/${this.id}/cards`
 					const response = await axios.get(url)
 					this.cards = response.data.cards
 					console.log(this.cards)
@@ -66,7 +89,7 @@
 
 			async new_card(card_question, card_answer){
 				try {
-					const url = `http://127.0.0.1:5000/deck/${this.$route.params.id}/card`
+					const url = `${this.base.url}/deck/${this.id}/card`
 					await axios.post(url, {
 						question: card_question,
 						answer: card_answer

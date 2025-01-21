@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 class Deck(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    cards = db.relationship('Card', backref='deck', lazy=True)
+    cards = db.relationship('Card', backref='deck', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Deck {self.name}>'
@@ -46,12 +46,12 @@ def create_deck():
         return jsonify({'error': 'deck name required!'}), 400
 
 
-@app.route('/deck/<int:deck_id>/card', methods=['DELETE'])
+@app.route('/deck/<int:deck_id>', methods=['DELETE'])
 def delete_deck(deck_id):
     deck = Deck.query.get_or_404(deck_id)
     if deck:
         db.session.delete(deck)
-        db.commit()
+        db.session.commit()
         return jsonify({'message': f'deck with id {deck_id} deleted'}), 200
     else:
         return jsonify({'error': 'deck not found'}), 404
