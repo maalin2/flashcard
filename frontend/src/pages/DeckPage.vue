@@ -24,6 +24,10 @@
 						<i>{{card.question}}</i>
 						<br>
 						<b>{{card.answer}}</b>
+						<br>
+						<button @click="del_card(card.id)">
+							delete
+						</button>
 					</p>
 				</li>
 			</div>
@@ -74,12 +78,24 @@
 					}
 				)
 			}, 
+			async del_card(card_id) {
+				const url = `${this.base_url}/deck/${this.id}/card/${card_id}`
+				console.log(url)
+				axios.delete(url)
+					.then(() => {
+						this.fetchCards()
+					}).catch((e) => {
+						console.error('failed to delete card', e)
+					}
+				)
+			},
 			async fetchCards() {
 				try {
 					const url = `${this.base_url}/deck/${this.id}/cards`
 					const response = await axios.get(url)
 					this.cards = response.data.cards
-					console.log(this.cards)
+					this.card_question = ''
+					this.card_answer = ''
 				} catch (e) {
 					this.error = true;
 				} finally {
@@ -89,7 +105,7 @@
 
 			async new_card(card_question, card_answer){
 				try {
-					const url = `${this.base.url}/deck/${this.id}/card`
+					const url = `${this.base_url}/deck/${this.id}/card`
 					await axios.post(url, {
 						question: card_question,
 						answer: card_answer

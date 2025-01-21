@@ -73,7 +73,7 @@ def create_card(deck_id):
 @app.route('/deck/<int:deck_id>/card/<int:card_id>', methods=['DELETE'])
 def delete_card(deck_id, card_id):
     deck = Deck.query.get_or_404(deck_id)
-    card = Card.query.filter_by(id=card_id, deck_id = deck_id).first()
+    card = Card.query.filter_by(id=card_id, deck_id=deck_id).first()
     if not card:
         return jsonify({'error': 'card not found'}), 404
 
