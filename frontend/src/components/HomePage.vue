@@ -16,6 +16,13 @@
 					<router-link :to="`/deck/${this.selected.id}`">
 						view {{this.selected.name}}'s cards
 					</router-link>
+					<br>
+					<br>
+					<router-link :to="`/deck/${this.selected.id}/type`">
+						type test {{this.selected.name}}'s cards
+					</router-link>
+					<br>
+					<br>
 				</div>
 				<div v-else>
 					Select a deck
