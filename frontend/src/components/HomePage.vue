@@ -1,5 +1,9 @@
 <template>
 	<div>
+		<p v-if="deck_deleted">
+			deck deleted
+		</p>
+
 		<ul>
 			<div>
 				<p v-if="complete">
@@ -55,8 +59,19 @@
 					name: 'no deck'
 				},
 				new_deck_name: '',
-				complete: false
+				complete: false,
+				deck_deleted: false
 
+			}
+		},
+		created() {
+			if (this.$route.query.deck_deleted) {
+				this.deck_deleted = true
+				setTimeout(() => {this.deck_deleted = false}, 3000);
+
+				this.$router.replace({
+					path: '/'
+				})
 			}
 		},
 
